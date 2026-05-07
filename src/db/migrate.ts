@@ -1,23 +1,23 @@
-import { neon } from '@neondatabase/serverless';
-import { drizzle } from 'drizzle-orm/neon-http';
-import { migrate } from 'drizzle-orm/neon-http/migrator';
-import * as dotenv from 'dotenv';
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
+import { migrate } from "drizzle-orm/neon-http/migrator";
+import * as dotenv from "dotenv";
 
 dotenv.config();
 
 const runMigrate = async () => {
-  if (!process.env.DATABASE_URL) {
-    throw new Error('DATABASE_URL is not defined');
+  if (!process.env.NEXT_PUBLIC_DATABASE_URL) {
+    throw new Error("DATABASE_URL is not defined");
   }
 
-  const sql = neon(process.env.DATABASE_URL);
+  const sql = neon(process.env.NEXT_PUBLIC_DATABASE_URL);
   const db = drizzle(sql);
 
-  console.log('⏳ Running migrations...');
+  console.log("⏳ Running migrations...");
 
   const start = Date.now();
 
-  await migrate(db, { migrationsFolder: 'drizzle' });
+  await migrate(db, { migrationsFolder: "drizzle" });
 
   const end = Date.now();
 
@@ -27,7 +27,7 @@ const runMigrate = async () => {
 };
 
 runMigrate().catch((err) => {
-  console.error('❌ Migration failed');
+  console.error("❌ Migration failed");
   console.error(err);
   process.exit(1);
 });
