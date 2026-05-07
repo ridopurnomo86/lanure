@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import type { NextRequest } from "next/request";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
@@ -9,7 +9,9 @@ export function middleware(request: NextRequest) {
 
     // For simplicity, we check against a secret.
     // In production, this should be a proper JWT or session.
-    if (adminToken !== process.env.ADMIN_SECRET) {
+    const secret = process.env.ADMIN_SECRET;
+
+    if (!adminToken || !secret || adminToken !== secret) {
       return NextResponse.redirect(new URL("/login", request.url));
     }
   }

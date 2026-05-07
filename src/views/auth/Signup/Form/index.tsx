@@ -1,5 +1,3 @@
-import { Link } from "@tanstack/react-router";
-
 import {
   Eye,
   EyeOff,
@@ -10,7 +8,8 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/core/Button";
+import Link from "next/link";
 
 const Form = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -22,7 +21,7 @@ const Form = () => {
       <div className="w-full max-w-md space-y-9 relative z-10">
         <div className="space-y-4">
           <Link
-            to="/"
+            href="/"
             className="inline-flex lg:hidden items-center gap-2 mb-6"
           >
             <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -200,7 +199,7 @@ const Form = () => {
         <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 font-medium">
           Already have an account?{" "}
           <Link
-            to="/login"
+            href="/login"
             className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-bold transition-colors underline underline-offset-4"
           >
             Log in here

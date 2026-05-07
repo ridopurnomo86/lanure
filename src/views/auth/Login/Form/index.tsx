@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router";
 import { Eye, EyeOff, LayoutTemplate } from "lucide-react";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/core/Button";
+import Link from "next/link";
 
 const Form = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +51,7 @@ const Form = () => {
                   Password
                 </label>
                 <Link
-                  to="/login"
+                  href="/login"
                   className="text-sm font-semibold text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
                 >
                   Forgot password?
@@ -149,7 +149,7 @@ const Form = () => {
         <p className="text-center text-sm text-zinc-500 dark:text-zinc-400 font-medium">
           Don&apos;t have an account?{" "}
           <Link
-            to="/signup"
+            href="/signup"
             className="text-indigo-600 hover:text-indigo-700 dark:text-indigo-400 dark:hover:text-indigo-300 font-bold transition-colors"
           >
             Sign up
