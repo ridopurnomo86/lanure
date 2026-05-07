@@ -3,5 +3,5 @@
   "name": "lanure-next",
   "compatibility_date": "2026-03-16",
   "compatibility_flags": ["nodejs_compat"],
-  "pages_build_output_dir": ".next"
+  "pages_build_output_dir": ".vercel/output/static"
 }
