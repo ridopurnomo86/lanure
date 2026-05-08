@@ -44,9 +44,22 @@ export const product = pgTable("product", {
   commissionRate: real("commission_rate").default(0).notNull(),
 });
 
+export const category = pgTable("category", {
+  id: serial("id").primaryKey(),
+  label: varchar("label").notNull(),
+  image: varchar("image").notNull(),
+  isSpecial: boolean("is_special").default(false).notNull(),
+  slug: varchar("slug").unique().notNull(),
+});
+
+
 // Types
 export type Admin = typeof admin.$inferSelect;
 export type NewAdmin = typeof admin.$inferInsert;
 
 export type Product = typeof product.$inferSelect;
 export type NewProduct = typeof product.$inferInsert;
+
+export type Category = typeof category.$inferSelect;
+export type NewCategory = typeof category.$inferInsert;
+

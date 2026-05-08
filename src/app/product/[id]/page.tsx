@@ -3,14 +3,23 @@ import { product } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Image from "next/image";
-import { ShoppingBag, Star, ChevronRight, ShieldCheck, Truck, RefreshCw } from "lucide-react";
+import {
+  ShoppingBag,
+  Star,
+  ChevronRight,
+  ShieldCheck,
+  Truck,
+  RefreshCw,
+} from "lucide-react";
+import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
 }
 
-export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
   const [item] = await db.select().from(product).where(eq(product.id, id));
 
@@ -73,7 +82,12 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-sm text-ceramide-text-muted mb-8">
-        <a href="/" className="hover:text-ceramide-text-dark transition-colors">Beranda</a>
+        <Link
+          href="/"
+          className="hover:text-ceramide-text-dark transition-colors"
+        >
+          Beranda
+        </Link>
         <ChevronRight className="w-4 h-4" />
         <span className="capitalize">{item.category}</span>
         <ChevronRight className="w-4 h-4" />
@@ -93,8 +107,15 @@ export default async function ProductPage({ params }: ProductPageProps) {
           {/* Multi-image placeholders if needed */}
           <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="aspect-square bg-gray-50 rounded-2xl border border-gray-100 cursor-pointer hover:border-ceramide-text-dark transition-colors overflow-hidden p-2">
-                <img src={item.image} alt="" className="w-full h-full object-contain opacity-50" />
+              <div
+                key={i}
+                className="aspect-square bg-gray-50 rounded-2xl border border-gray-100 cursor-pointer hover:border-ceramide-text-dark transition-colors overflow-hidden p-2"
+              >
+                <img
+                  src={item.image}
+                  alt=""
+                  className="w-full h-full object-contain opacity-50"
+                />
               </div>
             ))}
           </div>
@@ -107,7 +128,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <span className="px-3 py-1 bg-ceramide-red/10 text-ceramide-red text-[10px] font-bold rounded-full uppercase tracking-wider">
                 Terlaris
               </span>
-              <p className="text-sm font-bold text-ceramide-text-muted uppercase tracking-widest">{item.brand}</p>
+              <p className="text-sm font-bold text-ceramide-text-muted uppercase tracking-widest">
+                {item.brand}
+              </p>
             </div>
             <h1 className="text-4xl md:text-5xl font-serif text-ceramide-text-dark leading-tight">
               {item.name}
@@ -115,13 +138,18 @@ export default async function ProductPage({ params }: ProductPageProps) {
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-1 text-amber-400">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className={`w-4 h-4 fill-current ${i >= Math.floor(item.rating) ? 'text-gray-200' : ''}`} />
+                  <Star
+                    key={i}
+                    className={`w-4 h-4 fill-current ${i >= Math.floor(item.rating) ? "text-gray-200" : ""}`}
+                  />
                 ))}
               </div>
-              <span className="text-sm text-ceramide-text-muted font-medium">({item.reviewCount} ulasan)</span>
+              <span className="text-sm text-ceramide-text-muted font-medium">
+                ({item.reviewCount} ulasan)
+              </span>
             </div>
             <p className="text-3xl font-bold text-ceramide-text-dark">
-              Rp {(item.price / 100).toLocaleString('id-ID')}
+              Rp {(item.price / 100).toLocaleString("id-ID")}
             </p>
           </div>
 
@@ -148,19 +176,38 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-gray-100">
             <div className="flex flex-col items-center text-center gap-2">
               <ShieldCheck className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">100% Original</p>
+              <p className="text-xs font-bold uppercase tracking-wider">
+                100% Original
+              </p>
             </div>
             <div className="flex flex-col items-center text-center gap-2">
               <Truck className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">Gratis Ongkir</p>
+              <p className="text-xs font-bold uppercase tracking-wider">
+                Gratis Ongkir
+              </p>
             </div>
             <div className="flex flex-col items-center text-center gap-2">
               <RefreshCw className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">Mudah Diretur</p>
+              <p className="text-xs font-bold uppercase tracking-wider">
+                Mudah Diretur
+              </p>
             </div>
           </div>
         </div>
       </div>
+      {/* Real Results Section */}
+      <section className="mt-24 space-y-12">
+        <div className="text-center space-y-4">
+          <h2 className="text-3xl md:text-5xl font-serif text-ceramide-text-dark">
+            Hasil Nyata
+          </h2>
+          <p className="text-ceramide-text-muted max-w-2xl mx-auto">
+            Lihat transformasi nyata setelah menggunakan {item.name}.
+            Diformulasikan untuk memberikan hasil maksimal dengan bahan-bahan
+            premium.
+          </p>
+        </div>
+      </section>
     </div>
   );
 }

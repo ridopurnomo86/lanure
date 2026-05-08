@@ -4,7 +4,7 @@ const PROMO_CARDS = [
     subtitle: "Hadiah Liburan",
     title: "Set Pembersih Untuk Kulit Sensitif",
     discount: "40%",
-    image: "/images/promo/promo-1.png",
+    image: "https://ik.imagekit.io/nip7tdbas/main/promo-1.png",
     link: "/shop/cleansing-set",
   },
   {
@@ -12,7 +12,7 @@ const PROMO_CARDS = [
     subtitle: "Hadiah Liburan",
     title: "Countertop Kamar Mandi Pastel",
     discount: "30%",
-    image: "/images/promo/promo-2.png",
+    image: "https://ik.imagekit.io/nip7tdbas/main/promo-2.png",
     link: "/shop/bathroom-set",
   },
 ];

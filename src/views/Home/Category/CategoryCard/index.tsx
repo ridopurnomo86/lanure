@@ -33,6 +33,7 @@ const CategoryCard = ({
           height={64}
           src={imageUrl}
           alt={label}
+          loading="lazy"
           className="w-16 h-16 object-contain"
         />
       )}

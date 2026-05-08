@@ -1,7 +1,7 @@
 export const DAILY_PROMO = {
   subtitle: "Hemat Besar",
   title: "Untuk Set Liburan",
-  image: "/images/promo/daily-promo.png",
+  image: "https://ik.imagekit.io/nip7tdbas/main/daily-promo.png",
   link: "/shop/holiday-sets",
 };
 
