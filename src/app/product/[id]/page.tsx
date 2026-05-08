@@ -11,7 +11,6 @@ import {
   Truck,
   RefreshCw,
 } from "lucide-react";
-import Link from "next/link";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -82,12 +81,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
       {/* Breadcrumbs */}
       <nav className="flex items-center gap-2 text-sm text-ceramide-text-muted mb-8">
-        <Link
-          href="/"
-          className="hover:text-ceramide-text-dark transition-colors"
-        >
+        <a href="/" className="hover:text-ceramide-text-dark transition-colors">
           Beranda
-        </Link>
+        </a>
         <ChevronRight className="w-4 h-4" />
         <span className="capitalize">{item.category}</span>
         <ChevronRight className="w-4 h-4" />
@@ -195,19 +191,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
           </div>
         </div>
       </div>
-      {/* Real Results Section */}
-      <section className="mt-24 space-y-12">
-        <div className="text-center space-y-4">
-          <h2 className="text-3xl md:text-5xl font-serif text-ceramide-text-dark">
-            Hasil Nyata
-          </h2>
-          <p className="text-ceramide-text-muted max-w-2xl mx-auto">
-            Lihat transformasi nyata setelah menggunakan {item.name}.
-            Diformulasikan untuk memberikan hasil maksimal dengan bahan-bahan
-            premium.
-          </p>
-        </div>
-      </section>
     </div>
   );
 }
