@@ -5,7 +5,7 @@ import { product } from "@/db/schema";
 import { BLOG_POSTS } from "@/data/blog-posts";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://lanure.pages.dev"; // Replace with actual production URL
+  const baseUrl = process.env.BASE_URL; // Replace with actual production URL
 
   let productUrls: any[] = [];
   try {

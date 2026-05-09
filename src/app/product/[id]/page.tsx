@@ -60,7 +60,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     },
     offers: {
       "@type": "Offer",
-      url: `https://lanure.pages.dev/product/${id}`,
+      url: `${process.env.BASE_URL}/product/${id}`,
       priceCurrency: "IDR",
       price: item.price / 100, // Assuming price is in cents for precision
       availability: "https://schema.org/InStock",
