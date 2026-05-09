@@ -11,13 +11,16 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "tsx src/db/migrate.ts",
     "db:push": "drizzle-kit push",
+    "analyze": "cross-env ANALYZE=true next build --webpack",
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
     "@neondatabase/serverless": "^1.1.0",
+    "@next/bundle-analyzer": "^16.2.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "drizzle-kit": "^0.31.10",
     "drizzle-orm": "^0.45.2",

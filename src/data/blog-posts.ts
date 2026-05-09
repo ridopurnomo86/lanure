@@ -17,7 +17,8 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "2026-05-01",
     author: "Lanure Editor",
     category: "Rekomendasi",
-    excerpt: "Mencari serum berkualitas tanpa harus merogoh kocek dalam? Cek daftar serum terbaik 2026 harga terjangkau di sini.",
+    excerpt:
+      "Mencari serum berkualitas tanpa harus merogoh kocek dalam? Cek daftar serum terbaik 2026 harga terjangkau di sini.",
     content: `
       <h2>Serum Berkualitas Tidak Harus Mahal</h2>
       <p>Memulai rutinitas skincare seringkali terasa membingungkan, terutama saat melihat harga produk yang selangit. Namun, di tahun 2026 ini, banyak brand lokal maupun internasional yang meluncurkan serum berkualitas dengan harga di bawah Rp100.000.</p>
@@ -31,16 +32,18 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Mengapa Serum Penting?</h3>
       <p>Serum memiliki konsentrasi bahan aktif yang lebih tinggi dibandingkan pelembab biasa, sehingga mampu menembus lapisan kulit lebih dalam untuk mengatasi masalah kulit spesifik.</p>
     `,
-    image: "/images/blog/blog-1.png",
+    image: "https://ik.imagekit.io/nip7tdbas/blog/blog-1.jpg",
     tags: ["serum", "murah", "pemula"],
   },
   {
     slug: "review-sunscreen-terbaik-2026",
-    title: "Review Sunscreen Terbaik 2026 — Perlindungan Maksimal Tanpa Whitecast",
+    title:
+      "Review Sunscreen Terbaik 2026 — Perlindungan Maksimal Tanpa Whitecast",
     date: "2026-05-03",
     author: "Skincare Guru",
     category: "Review",
-    excerpt: "Jangan biarkan sinar UV merusak kulitmu. Simak review sunscreen paling nyaman di tahun 2026 yang tidak lengket.",
+    excerpt:
+      "Jangan biarkan sinar UV merusak kulitmu. Simak review sunscreen paling nyaman di tahun 2026 yang tidak lengket.",
     content: `
       <h2>Pentingnya Sunscreen Setiap Hari</h2>
       <p>Sunscreen adalah langkah paling krusial dalam rutinitas skincare. Tanpa perlindungan UV, semua produk mahal yang Anda gunakan akan sia-sia.</p>
@@ -48,7 +51,7 @@ export const BLOG_POSTS: BlogPost[] = [
       <h3>Teknologi Sunscreen Terbaru</h3>
       <p>Tahun ini kita melihat inovasi luar biasa dalam tekstur sunscreen yang semakin ringan seperti air (watery essence) namun tetap memberikan proteksi SPF 50+ PA++++.</p>
     `,
-    image: "/images/blog/blog-2.png",
+    image: "https://ik.imagekit.io/nip7tdbas/blog/blog-2.jpg",
     tags: ["sunscreen", "uv protection", "review"],
   },
   {
@@ -57,7 +60,8 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "2026-05-05",
     author: "Dr. Beauty",
     category: "Tips",
-    excerpt: "Punya masalah dengan minyak berlebih? Ikuti panduan rutinitas skincare pagi dan malam ini untuk kulit bebas kilap.",
+    excerpt:
+      "Punya masalah dengan minyak berlebih? Ikuti panduan rutinitas skincare pagi dan malam ini untuk kulit bebas kilap.",
     content: `
       <h2>Rutinitas Pagi</h2>
       <ol>
@@ -75,7 +79,7 @@ export const BLOG_POSTS: BlogPost[] = [
         <li>Moisturizer ringan</li>
       </ol>
     `,
-    image: "/images/blog/blog-3.png",
+    image: "https://ik.imagekit.io/nip7tdbas/blog/blog-3.jpg",
     tags: ["kulit berminyak", "routine", "tips"],
   },
   {
@@ -84,7 +88,8 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "2026-05-06",
     author: "Shopee Hunter",
     category: "Belanja",
-    excerpt: "Kulit lembap tidak perlu mahal. Berikut adalah 5 pelembab terlaris di Shopee yang harganya sangat bersahabat.",
+    excerpt:
+      "Kulit lembap tidak perlu mahal. Berikut adalah 5 pelembab terlaris di Shopee yang harganya sangat bersahabat.",
     content: `
       <h2>Pelembab Adalah Kunci</h2>
       <p>Moisturizer berfungsi mengunci kelembapan dan menjaga skin barrier agar tetap sehat. Di Shopee, ada banyak pilihan pelembab lokal yang sudah BPOM dan berkualitas tinggi.</p>
@@ -98,7 +103,8 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "2026-05-07",
     author: "K-Beauty Fan",
     category: "K-Beauty",
-    excerpt: "Tren Glass Skin masih bertahan. Lihat produk Korea apa saja yang paling banyak dicari di Shopee tahun ini.",
+    excerpt:
+      "Tren Glass Skin masih bertahan. Lihat produk Korea apa saja yang paling banyak dicari di Shopee tahun ini.",
     content: `
       <h2>Fenomena K-Beauty</h2>
       <p>Skincare Korea dikenal dengan formulanya yang inovatif dan fokus pada hidrasi. Dari snail mucin hingga centella asiatica, produk-produk ini tetap menjadi primadona.</p>
