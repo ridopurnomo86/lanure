@@ -2,9 +2,10 @@
 "use client";
 
 import { useState } from "react";
-import { IKUpload } from "imagekitio-next";
+import imageCompression from "browser-image-compression";
 import { Loader2, Upload, X, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { authenticator, getImageKitInstance } from "@/lib/imagekit";
 
 export default function AdminProductForm() {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,50 @@ export default function AdminProductForm() {
   const onUploadStart = () => {
     setUploading(true);
     setError("");
+  };
+
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    onUploadStart();
+
+    try {
+      // 1. Compress Image
+      const options = {
+        maxSizeMB: 1, // Max file size 1MB
+        maxWidthOrHeight: 1200, // Max dimension 1200px
+        useWebWorker: true,
+      };
+
+      const compressedFile = await imageCompression(file, options);
+
+      // 2. Initialize ImageKit
+      const imagekit = getImageKitInstance();
+
+      // 3. Get Auth Params
+      const authParams = await authenticator();
+
+      // 4. Upload to ImageKit
+      imagekit.upload(
+        {
+          file: compressedFile,
+          fileName: file.name,
+          folder: "/product",
+          ...authParams,
+        },
+        (err: any, result: any) => {
+          if (err) {
+            onError(err);
+          } else {
+            onSuccess(result);
+          }
+        },
+      );
+    } catch (err) {
+      console.error("Compression/Upload error:", err);
+      onError(err);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -177,12 +222,10 @@ export default function AdminProductForm() {
                         PNG, JPG or WEBP (Max 5MB)
                       </p>
                     </div>
-                    <IKUpload
-                      fileName="product-image.jpg"
-                      folder="/product"
-                      onError={onError}
-                      onSuccess={onSuccess}
-                      onUploadStart={onUploadStart}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
                       className="absolute inset-0 opacity-0 cursor-pointer"
                     />
                   </>

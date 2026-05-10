@@ -5,6 +5,7 @@ import Blog from "./Blog";
 import ListCategory from "./Category";
 import DailyEssentials from "./DailyEssentials";
 import Hero from "./Hero";
+import PersonalizedFormulas from "./PersonalizedFormulas";
 import PromoCards from "./PromoCards";
 // import BeforeAfterSlider from "@/components/BeforeAfterSlider";
 
@@ -18,6 +19,7 @@ const Home = ({ categories }: HomePropsType) => (
       <Hero />
       <ListCategory categories={categories} />
       <DailyEssentials />
+      <PersonalizedFormulas />
       <PromoCards />
       <Blog />
       {/* <BeforeAfterSlider

@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || "default_secret_key_change_me"
+  process.env.JWT_SECRET || "default_secret_key_change_me",
 );
 
 export async function encrypt(payload: any) {
@@ -32,12 +33,12 @@ export async function login(adminId: number) {
 
   // Save the session in a cookie
   const cookieStore = await cookies();
-  cookieStore.set("admin_token", session, { 
-    expires, 
+  cookieStore.set("admin_token", session, {
+    expires,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: "/"
+    path: "/",
   });
 }
 

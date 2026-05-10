@@ -26,7 +26,7 @@ const CategoryCard = ({
       )}
     >
       {isSpecial ? (
-        <span className="text-white font-serif text-2xl font-bold">Diskon</span>
+        <span className="text-white font-serif text-2xl font-bold">Sale</span>
       ) : (
         <Image
           width={64}

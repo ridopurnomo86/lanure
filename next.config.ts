@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   },
   bundlePagesRouterDependencies: true,
   images: {
-    domains: ["ik.imagekit.io"],
+    domains: ["ik.imagekit.io", "images.unsplash.com"],
   },
 };
 
