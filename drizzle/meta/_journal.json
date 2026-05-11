@@ -15,6 +15,13 @@
       "when": 1778208644760,
       "tag": "0001_bumpy_doomsday",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1778469482621,
+      "tag": "0002_cuddly_meteorite",
+      "breakpoints": true
     }
   ]
 }

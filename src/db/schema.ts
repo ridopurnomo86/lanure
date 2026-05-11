@@ -9,6 +9,7 @@ import {
   json,
   timestamp,
 } from "drizzle-orm/pg-core";
+import { relations } from "drizzle-orm";
 
 export const admin = pgTable("admin", {
   id: serial("id").primaryKey(),
@@ -52,6 +53,26 @@ export const category = pgTable("category", {
   slug: varchar("slug").unique().notNull(),
 });
 
+export const productImage = pgTable("product_image", {
+  id: serial("id").primaryKey(),
+  productId: varchar("product_id")
+    .notNull()
+    .references(() => product.id, { onDelete: "cascade" }),
+  url: varchar("url").notNull(),
+  order: integer("order").default(0).notNull(),
+});
+
+// Relations
+export const productRelations = relations(product, ({ many }) => ({
+  images: many(productImage),
+}));
+
+export const productImageRelations = relations(productImage, ({ one }) => ({
+  product: one(product, {
+    fields: [productImage.productId],
+    references: [product.id],
+  }),
+}));
 
 // Types
 export type Admin = typeof admin.$inferSelect;
@@ -60,6 +81,8 @@ export type NewAdmin = typeof admin.$inferInsert;
 export type Product = typeof product.$inferSelect;
 export type NewProduct = typeof product.$inferInsert;
 
+export type ProductImage = typeof productImage.$inferSelect;
+export type NewProductImage = typeof productImage.$inferInsert;
+
 export type Category = typeof category.$inferSelect;
 export type NewCategory = typeof category.$inferInsert;
-
