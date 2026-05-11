@@ -42,11 +42,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
   try {
     item = await db.query.product.findFirst({
       where: eq(product.id, id),
-      with: {
-        images: {
-          orderBy: (images, { asc }) => [asc(images.order)],
-        },
-      },
     });
   } catch (e) {
     console.error("DB error:", e);

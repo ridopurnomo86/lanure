@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import { Product } from "@/db/schema";
 import SectionDetail from "./SectionDetail";
+import VideoReviews from "./VideoPreviews";
 
 type ProductDetailPropsType = {
+  // ... existing types ...
   product: Product;
   relatedProducts: Product[];
 };
@@ -22,9 +24,10 @@ const ProductDetail = ({
     useState("Every Month");
 
   // Use dynamic images from product if available
-  const images = (product as any).images?.length > 0 
-    ? (product as any).images.map((img: any) => img.url)
-    : [product.image];
+  const images =
+    (product as any).images?.length > 0
+      ? (product as any).images.map((img: any) => img.url)
+      : [product.image];
 
   return (
     <div className="min-h-screen bg-[#FDFCF7]">
@@ -42,6 +45,7 @@ const ProductDetail = ({
         quantity={quantity}
         setQuantity={setQuantity}
       />
+      <VideoReviews videos={(product as any).videos} />
     </div>
   );
 };

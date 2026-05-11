@@ -26,6 +26,7 @@ export const admin = pgTable("admin", {
 export const product = pgTable("product", {
   id: varchar("id").primaryKey(),
   name: varchar("name").notNull(),
+  slug: varchar("slug").unique().notNull(),
   brand: varchar("brand").notNull(),
   category: varchar("category").notNull(),
   price: integer("price").notNull(),
@@ -62,14 +63,31 @@ export const productImage = pgTable("product_image", {
   order: integer("order").default(0).notNull(),
 });
 
+export const productVideo = pgTable("product_video", {
+  id: serial("id").primaryKey(),
+  productId: varchar("product_id")
+    .notNull()
+    .references(() => product.id, { onDelete: "cascade" }),
+  url: varchar("url").notNull(), // The embed URL or share URL
+  type: varchar("type").notNull(), // 'tiktok' | 'instagram' | 'youtube'
+});
+
 // Relations
 export const productRelations = relations(product, ({ many }) => ({
   images: many(productImage),
+  videos: many(productVideo),
 }));
 
 export const productImageRelations = relations(productImage, ({ one }) => ({
   product: one(product, {
     fields: [productImage.productId],
+    references: [product.id],
+  }),
+}));
+
+export const productVideoRelations = relations(productVideo, ({ one }) => ({
+  product: one(product, {
+    fields: [productVideo.productId],
     references: [product.id],
   }),
 }));
@@ -83,6 +101,9 @@ export type NewProduct = typeof product.$inferInsert;
 
 export type ProductImage = typeof productImage.$inferSelect;
 export type NewProductImage = typeof productImage.$inferInsert;
+
+export type ProductVideo = typeof productVideo.$inferSelect;
+export type NewProductVideo = typeof productVideo.$inferInsert;
 
 export type Category = typeof category.$inferSelect;
 export type NewCategory = typeof category.$inferInsert;
