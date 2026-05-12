@@ -61,7 +61,9 @@ export default function AdminLoginPage() {
             >
               <Lock size={32} />
             </motion.div>
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Admin Portal</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+              Admin Portal
+            </h1>
             <p className="text-gray-500 mt-2">Sign in to manage Lanure Store</p>
           </div>
 
@@ -78,7 +80,9 @@ export default function AdminLoginPage() {
             )}
 
             <div className="space-y-2">
-              <label className="text-sm font-medium text-gray-700 ml-1">Email Address</label>
+              <label className="text-sm font-medium text-gray-700 ml-1">
+                Email Address
+              </label>
               <div className="relative group">
                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
                   <Mail size={20} />
@@ -96,8 +100,13 @@ export default function AdminLoginPage() {
 
             <div className="space-y-2">
               <div className="flex justify-between items-center px-1">
-                <label className="text-sm font-medium text-gray-700">Password</label>
-                <button type="button" className="text-xs text-primary hover:underline font-medium">
+                <label className="text-sm font-medium text-gray-700">
+                  Password
+                </label>
+                <button
+                  type="button"
+                  className="text-xs text-primary hover:underline font-medium"
+                >
                   Forgot password?
                 </button>
               </div>
@@ -128,7 +137,10 @@ export default function AdminLoginPage() {
               ) : (
                 <>
                   Sign In
-                  <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight
+                    size={20}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
                 </>
               )}
             </motion.button>
@@ -136,11 +148,14 @@ export default function AdminLoginPage() {
 
           <div className="mt-8 pt-8 border-t border-gray-100 text-center">
             <p className="text-sm text-gray-500">
-              Not an admin? <button className="text-primary font-medium hover:underline">Return to store</button>
+              Not an admin?{" "}
+              <button className="text-primary font-medium hover:underline">
+                Return to store
+              </button>
             </p>
           </div>
         </div>
-        
+
         <p className="text-center text-xs text-gray-400 mt-8">
           © {new Date().getFullYear()} Lanure. All rights reserved.
         </p>

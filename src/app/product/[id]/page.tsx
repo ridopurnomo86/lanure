@@ -1,16 +1,9 @@
 import { db } from "@/db";
 import { product } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, ne, and } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import {
-  ShoppingBag,
-  Star,
-  ChevronRight,
-  ShieldCheck,
-  Truck,
-  RefreshCw,
-} from "lucide-react";
+import ProductDetail from "@/views/product/ProductDetail";
 
 interface ProductPageProps {
   params: Promise<{ id: string }>;
@@ -20,177 +13,125 @@ export async function generateMetadata({
   params,
 }: ProductPageProps): Promise<Metadata> {
   const { id } = await params;
+
+  // Try to get from DB, otherwise use fallback for metadata
   const [item] = await db.select().from(product).where(eq(product.id, id));
 
-  if (!item) return { title: "Product Not Found" };
+  if (!item && id !== "lumera-clay-mask") return { title: "Product Not Found" };
+
+  const name = item?.name || "Luméra Pore Refining Clay Mask";
+  const brand = item?.brand || "Luméra";
+  const shortDesc =
+    item?.shortDesc || "Refresh and detoxify with Luméra Clay Mask.";
 
   return {
-    title: `${item.name} | ${item.brand} - Lanure`,
-    description: item.shortDesc,
+    title: `${name} | ${brand} - Lanure`,
+    description: shortDesc,
     openGraph: {
-      title: item.name,
-      description: item.shortDesc,
-      images: [{ url: item.image }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: item.name,
-      description: item.shortDesc,
-      images: [item.image],
+      title: name,
+      description: shortDesc,
+      images: [{ url: item?.image || "/product_main.png" }],
     },
   };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { id } = await params;
-  const [item] = await db.select().from(product).where(eq(product.id, id));
 
-  if (!item) notFound();
+  let item;
+  try {
+    item = await db.query.product.findFirst({
+      where: eq(product.id, id),
+    });
+  } catch (e) {
+    console.error("DB error:", e);
+  }
 
-  // JSON-LD Structured Data
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Product",
-    name: item.name,
-    image: item.image,
-    description: item.description,
-    brand: {
-      "@type": "Brand",
-      name: item.brand,
-    },
-    offers: {
-      "@type": "Offer",
-      url: `${process.env.BASE_URL}/product/${id}`,
-      priceCurrency: "IDR",
-      price: item.price / 100, // Assuming price is in cents for precision
-      availability: "https://schema.org/InStock",
-    },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: item.rating,
-      reviewCount: item.reviewCount,
-    },
-  };
+  // If no item found in DB, we'll use a mock item for demonstration
+  if (!item) {
+    item = {
+      id: id,
+      name: "Luméra Pore Refining Clay Mask",
+      brand: "Luméra",
+      category: "Face Masks",
+      price: 12800, // $128.00
+      originalPrice: 16000,
+      rating: 4.9,
+      reviewCount: 5200,
+      image: "/product_main.png",
+      affiliateUrl: "#",
+      description:
+        "Experience nature's purity with Luméra Refining Clay Mask—detoxify, tighten, and refresh your skin with soothing lavender and kaolin clay. Perfect for your weekly routine.",
+      shortDesc:
+        "Refresh and detoxify with Luméra Clay Mask. Soothing lavender and kaolin clay for smooth, clear skin.",
+      ingredients:
+        "Water, Kaolin, Glycerin, Bentonite, Butylene Glycol, Caprylic/Capric Triglyceride, Lavender Extract, Phenoxyethanol, Ethylhexylglycerin...",
+      howToUse:
+        "Apply an even layer to clean, dry skin. Leave on for 10-15 minutes or until the mask is dry. Rinse thoroughly with lukewarm water. Use 1-2 times a week for best results.",
+      skinTypes: ["All Skin Types", "Oily", "Combination"],
+      tags: ["Detox", "Pore Refining", "Lavender"],
+      volume: "100ml",
+      inStock: true,
+      commissionRate: 0.1,
+      images: [
+        { url: "/product_main.png", order: 1 },
+        { url: "/product_texture.png", order: 2 },
+        { url: "/product_main.png", order: 3 },
+        { url: "/product_texture.png", order: 4 },
+      ],
+    };
+  }
+
+  // Fetch related products
+  let relatedProducts = [];
+  try {
+    relatedProducts = await db
+      .select()
+      .from(product)
+      .where(ne(product.id, id))
+      .limit(4);
+  } catch (e) {
+    console.error("Related products DB error:", e);
+  }
+
+  // If no related products in DB, use mock ones
+  if (relatedProducts.length === 0) {
+    relatedProducts = [
+      {
+        id: "related-1",
+        name: "NEOVA DNA Repair",
+        brand: "NEOVA",
+        price: 8500,
+        image: "/product_related.png",
+      },
+      {
+        id: "related-2",
+        name: "NEOVA Cu3 Lip Repair",
+        brand: "NEOVA",
+        price: 4500,
+        image: "/product_related.png",
+      },
+      {
+        id: "related-3",
+        name: "NEOVA Silc Sheer 2.0",
+        brand: "NEOVA",
+        price: 6200,
+        image: "/product_related.png",
+      },
+      {
+        id: "related-4",
+        name: "NEOVA Illuminating Serum",
+        brand: "NEOVA",
+        price: 9800,
+        image: "/product_related.png",
+      },
+    ];
+  }
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
-
-      {/* Breadcrumbs */}
-      <nav className="flex items-center gap-2 text-sm text-ceramide-text-muted mb-8">
-        <a href="/" className="hover:text-ceramide-text-dark transition-colors">
-          Beranda
-        </a>
-        <ChevronRight className="w-4 h-4" />
-        <span className="capitalize">{item.category}</span>
-        <ChevronRight className="w-4 h-4" />
-        <span className="text-ceramide-text-dark font-medium">{item.name}</span>
-      </nav>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
-        {/* Left: Image Gallery */}
-        <div className="space-y-4">
-          <div className="aspect-square bg-[#F8F8F8] rounded-[32px] overflow-hidden flex items-center justify-center p-12">
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-full object-contain mix-blend-multiply"
-            />
-          </div>
-          {/* Multi-image placeholders if needed */}
-          <div className="grid grid-cols-4 gap-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div
-                key={i}
-                className="aspect-square bg-gray-50 rounded-2xl border border-gray-100 cursor-pointer hover:border-ceramide-text-dark transition-colors overflow-hidden p-2"
-              >
-                <img
-                  src={item.image}
-                  alt=""
-                  className="w-full h-full object-contain opacity-50"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right: Product Info */}
-        <div className="space-y-8">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 bg-ceramide-red/10 text-ceramide-red text-[10px] font-bold rounded-full uppercase tracking-wider">
-                Terlaris
-              </span>
-              <p className="text-sm font-bold text-ceramide-text-muted uppercase tracking-widest">
-                {item.brand}
-              </p>
-            </div>
-            <h1 className="text-4xl md:text-5xl font-serif text-ceramide-text-dark leading-tight">
-              {item.name}
-            </h1>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`w-4 h-4 fill-current ${i >= Math.floor(item.rating) ? "text-gray-200" : ""}`}
-                  />
-                ))}
-              </div>
-              <span className="text-sm text-ceramide-text-muted font-medium">
-                ({item.reviewCount} ulasan)
-              </span>
-            </div>
-            <p className="text-3xl font-bold text-ceramide-text-dark">
-              Rp {(item.price / 100).toLocaleString("id-ID")}
-            </p>
-          </div>
-
-          <p className="text-ceramide-text-muted leading-relaxed">
-            {item.description}
-          </p>
-
-          <div className="pt-4 space-y-4">
-            <a
-              href={item.affiliateUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-ceramide-btn-gray text-white py-5 rounded-full font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all transform hover:scale-[1.02] shadow-xl"
-            >
-              <ShoppingBag className="w-5 h-5" />
-              Beli di Shopee
-            </a>
-            <p className="text-center text-xs text-ceramide-text-muted">
-              *Anda akan diarahkan ke toko resmi Shopee
-            </p>
-          </div>
-
-          {/* Features */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-8 border-t border-gray-100">
-            <div className="flex flex-col items-center text-center gap-2">
-              <ShieldCheck className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">
-                100% Original
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center gap-2">
-              <Truck className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">
-                Gratis Ongkir
-              </p>
-            </div>
-            <div className="flex flex-col items-center text-center gap-2">
-              <RefreshCw className="w-6 h-6 text-[#6A9A8A]" />
-              <p className="text-xs font-bold uppercase tracking-wider">
-                Mudah Diretur
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ProductDetail
+      product={item as any}
+      relatedProducts={relatedProducts as any}
+    />
   );
 }

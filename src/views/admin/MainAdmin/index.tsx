@@ -1,5 +1,5 @@
 import { LogoutButton } from "@/components/LogoutButton";
-import AdminProductForm from "@/components/AdminProductForm";
+import Form from "./Form";
 
 const MainAdmin = () => (
   <div className="min-h-screen bg-[#FDFDFD] py-12">
@@ -16,7 +16,7 @@ const MainAdmin = () => (
         <LogoutButton />
       </div>
 
-      <AdminProductForm />
+      <Form />
     </div>
   </div>
 );
