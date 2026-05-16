@@ -28,7 +28,9 @@ export const product = pgTable("product", {
   name: varchar("name").notNull(),
   slug: varchar("slug").unique().notNull(),
   brand: varchar("brand").notNull(),
-  category: varchar("category").notNull(),
+  categoryId: integer("category_id")
+    .notNull()
+    .references(() => category.id, { onDelete: "cascade" }),
   price: integer("price").notNull(),
   originalPrice: integer("original_price"),
   rating: real("rating").default(0).notNull(),
@@ -72,10 +74,35 @@ export const productVideo = pgTable("product_video", {
   type: varchar("type").notNull(), // 'tiktok' | 'instagram' | 'youtube'
 });
 
+export const blogPost = pgTable("blog_post", {
+  id: serial("id").primaryKey(),
+  slug: varchar("slug").unique().notNull(),
+  title: varchar("title").notNull(),
+  date: varchar("date").notNull(), // Using varchar to match "2026-05-01" format in data
+  author: varchar("author").notNull(),
+  category: varchar("category").notNull(),
+  excerpt: text("excerpt").notNull(),
+  content: text("content").notNull(),
+  image: varchar("image").notNull(),
+  tags: json("tags").$type<string[]>().default([]).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at")
+    .notNull()
+    .$onUpdate(() => new Date()),
+});
+
 // Relations
-export const productRelations = relations(product, ({ many }) => ({
+export const productRelations = relations(product, ({ many, one }) => ({
   images: many(productImage),
   videos: many(productVideo),
+  category: one(category, {
+    fields: [product.categoryId],
+    references: [category.id],
+  }),
+}));
+
+export const categoryRelations = relations(category, ({ many }) => ({
+  products: many(product),
 }));
 
 export const productImageRelations = relations(productImage, ({ one }) => ({
@@ -107,3 +134,6 @@ export type NewProductVideo = typeof productVideo.$inferInsert;
 
 export type Category = typeof category.$inferSelect;
 export type NewCategory = typeof category.$inferInsert;
+
+export type BlogPost = typeof blogPost.$inferSelect;
+export type NewBlogPost = typeof blogPost.$inferInsert;

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
@@ -6,7 +7,6 @@ import SectionDetail from "./SectionDetail";
 import VideoReviews from "./VideoPreviews";
 
 type ProductDetailPropsType = {
-  // ... existing types ...
   product: Product;
   relatedProducts: Product[];
 };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Breadcrumbs from "./Breadcrumbs";
 import ImageGallery from "./ImageGallery";
 import RelatedProducts from "./RelatedProducts";

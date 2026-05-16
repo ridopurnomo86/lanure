@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { db } from "@/db";
 import { product, productImage, productVideo } from "@/db/schema";
@@ -6,12 +7,24 @@ import { revalidatePath } from "next/cache";
 export async function POST(request: Request) {
   try {
     const data = await request.json();
-    const { name, slug, brand, category, price, image, description, affiliateUrl, shortDesc, images, videos } = data;
+    const {
+      name,
+      slug,
+      brand,
+      categoryId,
+      price,
+      image,
+      description,
+      affiliateUrl,
+      shortDesc,
+      images,
+      videos,
+    } = data;
 
     if (!name || !slug || !image || !price) {
       return NextResponse.json(
         { error: "Missing required fields" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -22,7 +35,7 @@ export async function POST(request: Request) {
       name,
       slug,
       brand,
-      category,
+      categoryId: parseInt(categoryId),
       price: parseInt(price),
       image,
       description,
@@ -40,7 +53,7 @@ export async function POST(request: Request) {
           productId,
           url,
           order: index,
-        }))
+        })),
       );
     }
 
@@ -50,7 +63,7 @@ export async function POST(request: Request) {
           productId,
           url: v.url,
           type: v.type,
-        }))
+        })),
       );
     }
 
@@ -60,7 +73,7 @@ export async function POST(request: Request) {
     console.error("Error adding product:", error);
     return NextResponse.json(
       { error: "Internal server error" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

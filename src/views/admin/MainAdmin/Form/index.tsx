@@ -1,13 +1,15 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 /* eslint-disable react-hooks/purity */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IKUpload } from "imagekitio-next";
 import { Loader2, Upload, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
+import { Category } from "@/db/schema";
 
 const Form = () => {
   const [loading, setLoading] = useState(false);
@@ -15,8 +17,25 @@ const Form = () => {
   const [images, setImages] = useState<string[]>([]);
   const [videos, setVideos] = useState<{ url: string; type: string }[]>([]);
   const [slug, setSlug] = useState("");
+  const [categories, setCategories] = useState<Category[]>([]);
   const [error, setError] = useState("");
   const router = useRouter();
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch("/api/admin/categories");
+      if (response.ok) {
+        const data = await response.json();
+        setCategories(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch categories:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const generateSlug = (name: string) => {
     return name
@@ -103,7 +122,7 @@ const Form = () => {
         setError(data.error || "Failed to add product.");
       }
     } catch (err) {
-      setError("An error occurred. Please try again.");
+      setError(`${err}An error occurred. Please try again.`);
     } finally {
       setLoading(false);
     }
@@ -161,12 +180,18 @@ const Form = () => {
             <label className="text-sm font-semibold text-slate-700">
               Category
             </label>
-            <input
-              name="category"
+            <select
+              name="categoryId"
               required
-              placeholder="e.g. Moisturizer"
-              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
-            />
+              className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all bg-white text-sm"
+            >
+              <option value="">Select a category</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
           </div>
           <div className="space-y-2">
             <label className="text-sm font-semibold text-slate-700">
